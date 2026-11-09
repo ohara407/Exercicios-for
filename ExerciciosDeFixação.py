@@ -1,6 +1,9 @@
+for i in range(1, 101):
+    if i % 2 == 0:
+        print(i)
+    else:
+        continue
 n = int(input("Informe a quantidade de pessoas que irá apresentar a idade: "))
-
-
 beta = 0
 alfa = 0
 g_z = 0
@@ -26,11 +29,13 @@ for i in range(n):
         g_x += 1
     elif idade >= 62 and idade <= 80:
         baby += 1
+    elif idade >= 81 and idade <= 101:
+            sg += 1    
     else:
-        silent += 1
+        print("idade invalida")
 
 
-print("\n=== RESULTADO TOTAL ===")
+print("RESULTADO TOTAL")
 print(f"Geração Beta: {beta}")
 print(f"Geração Alfa: {alfa}")
 print(f"Geração Z: {g_z}")
@@ -39,15 +44,22 @@ print(f"Geração X: {g_x}")
 print(f"Geração Baby Boomers: {baby}")
 print(f"Silent Generation: {silent}")
 
-#Numa eleição existem três candidatos: Faça um programa que peça o número total de eleitores. Peça para cada eleitor
-#votar e ao final mostrar o número de votos de cada candidato
 
-eleitores = int(input("Informe a quantidade de eleitores: "))
+
+qtd_eleitores = int(input("Informe a quantidade de eleitores: "))
 cand_1 = 0
 cand_2 = 0
 cand_3 = 0
-for i in range(eleitores):
-    voto = print("Informe a quantidade de votos: ")
+for i in range(qtd_eleitores):
+    voto = int(input("Informe a quantidade de votos: "))
+    if voto == 1:
+        cand_1 += 1
+    elif voto == 2:
+        cand_2 += 1
+    elif voto == 3:
+        cand_3 += 1
+        
+print(f"os votos foram distribuidos: \nCandidato 1 {cand_1} votos \nCandidato 2 {cand_2} votos \nCandidato 3 {cand_3} votos ")
     
     
     
@@ -59,10 +71,10 @@ total_masculino = 0
 total_feminino = 0
 
 for i in range(total_pessoas):
-    print(f"\n--- Pessoa {i + 1} ---")
+    print(f"Pessoa {i + 1}")
     
     while True:
-        sexo = input("Informe o sexo (M/F): ").strip().upper()
+        sexo = input("Informe o sexo (M/F): ").upper()
         if sexo == 'M':
             total_masculino += 1
             break
@@ -121,3 +133,18 @@ if total_mulheres > 0:
     print(f"Idade média das mulheres: {media_mulheres:.1f} anos (Total: {total_mulheres})")
 else:
     print("Nenhuma mulher foi registrada no grupo.")
+
+#Desafio: Criar um script 
+# Python que analisa qualquer frase digitada pelo usuário e conta automaticamente 
+# quantas vogais ela contém. O programa deve funcionar para letras maiúsculas e minúsculas.
+
+vogais = "A", "E", "I", "O", "U"
+frase = input("Informe uma frase: ").upper()
+contador_vogais = 0
+for i in frase:
+    if i in vogais:
+        contador_vogais+=1
+        
+print(f"A frase contém {contador_vogais} vogais.")
+    
+

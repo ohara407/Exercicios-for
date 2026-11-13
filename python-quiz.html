@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python Quiz</title>
+<style>
+:root{--bg:#f4f5ff;--card:#ffffff;--text:#14152b;--muted:#5d6085;--line:#dfe1f5;--a:#6d5efc;--b:#00b3d9;--ok:#12a36b;--bad:#e5365a;--glow:rgba(109,94,252,.25);
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0b1a;--card:#14142b;--text:#f1f2ff;--muted:#9a9dc4;--line:#262650;--a:#8b7bff;--b:#22d3ee;--ok:#34e0a1;--bad:#ff5c7c;--glow:rgba(139,123,255,.35);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0b1a;--card:#14142b;--text:#f1f2ff;--muted:#9a9dc4;--line:#262650;--a:#8b7bff;--b:#22d3ee;--ok:#34e0a1;--bad:#ff5c7c;--glow:rgba(139,123,255,.35);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(900px 500px at 10% -10%,var(--glow),transparent 60%),radial-gradient(800px 500px at 100% 110%,rgba(34,211,238,.18),transparent 60%),var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:grid;place-items:center;padding:20px}
+#root{width:100%;max-width:640px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px;box-shadow:0 20px 60px -20px var(--glow);animation:in .4s ease}
+@keyframes in{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+@keyframes pop{0%{transform:scale(.96)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+.shake{animation:shake .4s}.pop{animation:pop .35s}
+h1{font-size:2.2rem;line-height:1.1;margin:8px 0 12px;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+p.sub{color:var(--muted);margin:0 0 24px;line-height:1.5}
+.logo{font-size:3rem}
+.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:700;border-radius:16px;padding:16px 22px;color:#fff;background:linear-gradient(135deg,var(--a),var(--b));box-shadow:0 10px 30px -10px var(--glow);transition:transform .15s,filter .15s}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.08)}.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--line);box-shadow:none}
+.row{display:flex;gap:12px;flex-wrap:wrap}.row>*{flex:1}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-weight:700}
+.hearts{letter-spacing:4px;font-size:1.3rem}.dead{filter:grayscale(1);opacity:.3}
+.score{color:var(--muted);font-variant-numeric:tabular-nums}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-bottom:26px}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--b));transition:width .5s ease}
+.tag{color:var(--muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;font-weight:700}
+.q{font-size:1.25rem;line-height:1.5;margin:8px 0 26px;font-weight:600}
+.ans{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{appearance:none;cursor:pointer;font:inherit;font-weight:800;font-size:1.05rem;padding:20px;border-radius:18px;border:2px solid var(--line);background:transparent;color:var(--text);transition:.15s}
+.opt:hover:not(:disabled){border-color:var(--a);transform:translateY(-2px);box-shadow:0 10px 30px -12px var(--glow)}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,transparent)}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,transparent)}
+.opt.dim{opacity:.4}
+.fb{margin-top:20px;padding:16px 18px;border-radius:16px;line-height:1.5;border:1px solid var(--line)}
+.fb.ok{border-color:var(--ok)}.fb.bad{border-color:var(--bad)}
+.fb b{display:block;margin-bottom:4px}
+.fb.ok b{color:var(--ok)}.fb.bad b{color:var(--bad)}
+.next{margin-top:16px;width:100%}
+.kbd{color:var(--muted);font-size:.8rem;text-align:center;margin-top:16px}
+.big{font-size:4rem;font-weight:900;margin:8px 0;background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;background-clip:text;color:transparent}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center}
+.stat b{display:block;font-size:1.4rem}.stat span{color:var(--muted);font-size:.8rem}
+@media(max-width:480px){.card{padding:20px}.ans{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const { useState, useEffect, useCallback } = React;
+
+// Troque por: fetch("/api/perguntas").then(r => r.json()) para vir do Python (Flask/FastAPI)
+const QUESTIONS = [
+  ["As palavras-chave True e False devem começar com letra maiúscula.", true, "True e False começam com letra maiúscula."],
+  ["Python é uma linguagem compilada, igual ao C++.", false, "Python é predominantemente interpretada."],
+  ["Listas (lists) são mutáveis: dá para alterar, adicionar e remover elementos.", true, "Listas são mutáveis a qualquer momento."],
+  ["Tuplas funcionam exatamente como listas e podem ser modificadas.", false, "Tuplas são imutáveis depois de criadas."],
+  ["A indentação é opcional em Python e serve só para deixar o código bonito.", false, "A indentação é obrigatória: ela define os blocos de código."],
+  ["O operador para verificar se dois valores são iguais é o ==.", true, "== compara valores; o = sozinho serve para atribuição."],
+  ["Uma variável pode começar com número, como 1variavel = teste.", false, "Nomes só podem começar com letra ou sublinhado (_)."],
+  ["O método .append() adiciona um elemento ao final de uma lista.", true, ".append() insere o elemento no final da lista."],
+  ["Dicionários (dicts) armazenam dados em pares de chave e valor.", true, "Dicionários associam uma chave a um valor."],
+  ["input() sempre retorna texto (string), mesmo que o usuário digite um número.", true, "Para usar como número, converta com int() ou float()."],
+  ["O operador != significa “diferente de”.", true, "!= retorna True quando os valores são diferentes."],
+  ["O resultado de 3 + 2 * 5 em Python é 25.", false, "O resultado é 13: a multiplicação vem antes da adição."],
+  ["Strings podem usar aspas simples ('texto') ou duplas (\"texto\").", true, "As duas formas são válidas."],
+  ["O resto de uma divisão inteira é obtido com o operador %.", true, "% (módulo) calcula o resto da divisão."],
+  ["A palavra-chave para criar uma função em Python é function.", false, "A palavra-chave correta é def."],
+  ["O comando elif é uma abreviação de “else if”.", true, "elif testa condições intermediárias."],
+  ["O índice do primeiro elemento de uma lista é 1.", false, "A contagem de índices começa em 0."],
+  ["A expressão not True resulta em False.", true, "O operador not inverte o valor booleano."],
+  ["Para saber a quantidade de elementos de uma lista usamos len().", true, "len() retorna o tamanho da lista."],
+  ["Comentários de uma linha em Python começam com //.", false, "Comentários de linha única começam com # (hashtag)."],
+].map(([q, a, exp]) => ({ q, a, exp }));
+
+const LIVES = 3;
+const shuffle = (arr) => [...arr].sort(() => Math.random() - 0.5);
+
+function Start({ onStart }) {
+  return (
+    <div className="card">
+      <div className="logo">🐍</div>
+      <h1>Python Quiz</h1>
+      <p className="sub">{QUESTIONS.length} afirmações de Verdadeiro ou Falso. Você tem {LIVES} vidas: errou {LIVES} vezes, acabou. Bora ver quanto você manja?</p>
+      <div className="row">
+        <button className="btn" onClick={() => onStart(false)}>Começar quiz</button>
+        <button className="btn ghost" onClick={() => onStart(true)}>Embaralhar 🔀</button>
+      </div>
+    </div>
+  );
+}
+
+function Quiz({ questions, onFinish }) {
+  const [i, setI] = useState(0);
+  const [lives, setLives] = useState(LIVES);
+  const [points, setPoints] = useState(0);
+  const [picked, setPicked] = useState(null);
+  const q = questions[i];
+  const answered = picked !== null;
+  const correct = answered && picked === q.a;
+  const gameOver = answered && !correct && lives - 1 <= 0;
+
+  const answer = useCallback((v) => {
+    if (picked !== null) return;
+    setPicked(v);
+    if (v === q.a) setPoints((p) => p + 1); else setLives((l) => l - 1);
+  }, [picked, q]);
+
+  const next = useCallback(() => {
+    if (gameOver || i + 1 === questions.length) {
+      onFinish({ points, total: questions.length, lives, answered: i + 1, over: gameOver });
+    } else { setI(i + 1); setPicked(null); }
+  }, [gameOver, i, points, lives, questions.length, onFinish]);
+
+  useEffect(() => {
+    const h = (e) => {
+      const k = e.key.toLowerCase();
+      if (!answered && k === "v") answer(true);
+      else if (!answered && k === "f") answer(false);
+      else if (answered && (k === "enter" || k === " ")) { e.preventDefault(); next(); }
+    };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, [answered, answer, next]);
+
+  const cls = (v) => !answered ? "opt" : v === q.a ? "opt ok" : v === picked ? "opt bad" : "opt dim";
+
+  return (
+    <div className={"card " + (answered ? (correct ? "pop" : "shake") : "")} key={i}>
+      <div className="top">
+        <span className="hearts">{Array.from({ length: LIVES }, (_, n) => <span key={n} className={n < lives ? "" : "dead"}>❤️</span>)}</span>
+        <span className="score">⭐ {points} pts</span>
+      </div>
+      <div className="bar"><i style={{ width: ((i + (answered ? 1 : 0)) / questions.length) * 100 + "%" }} /></div>
+      <div className="tag">Pergunta {i + 1} de {questions.length}</div>
+      <div className="q">{q.q}</div>
+      <div className="ans">
+        <button className={cls(true)} disabled={answered} onClick={() => answer(true)}>✅ Verdadeiro</button>
+        <button className={cls(false)} disabled={answered} onClick={() => answer(false)}>❌ Falso</button>
+      </div>
+      {answered && (
+        <>
+          <div className={"fb " + (correct ? "ok" : "bad")}>
+            <b>{correct ? "Correto!" : "Incorreto!"}</b>{q.exp}
+          </div>
+          <button className="btn next" onClick={next}>
+            {gameOver ? "Ver resultado" : i + 1 === questions.length ? "Finalizar" : "Próxima →"}
+          </button>
+        </>
+      )}
+      {!answered && <div className="kbd">Atalhos: V = Verdadeiro · F = Falso</div>}
+      {answered && <div className="kbd">Enter para continuar</div>}
+    </div>
+  );
+}
+
+function Result({ r, onRestart }) {
+  const pct = Math.round((r.points / r.total) * 100);
+  const msg = r.over ? "Acabaram as vidas! 💀" : pct === 100 ? "Perfeito! Você é lenda 🏆" : pct >= 70 ? "Mandou bem! 🔥" : "Dá pra melhorar. Tenta de novo! 💪";
+  return (
+    <div className="card">
+      <div className="tag">Resultado</div>
+      <div className="big">{pct}%</div>
+      <h2 style={{ margin: 0 }}>{msg}</h2>
+      <div className="stats">
+        <div className="stat"><b>{r.points}</b><span>acertos</span></div>
+        <div className="stat"><b>{r.answered - r.points}</b><span>erros</span></div>
+        <div className="stat"><b>{r.lives}</b><span>vidas</span></div>
+      </div>
+      <button className="btn" style={{ width: "100%" }} onClick={onRestart}>Jogar de novo 🔁</button>
+    </div>
+  );
+}
+
+function App() {
+  const [screen, setScreen] = useState("start");
+  const [qs, setQs] = useState(QUESTIONS);
+  const [result, setResult] = useState(null);
+  return screen === "start" ? <Start onStart={(sh) => { setQs(sh ? shuffle(QUESTIONS) : QUESTIONS); setScreen("quiz"); }} />
+    : screen === "quiz" ? <Quiz questions={qs} onFinish={(r) => { setResult(r); setScreen("end"); }} />
+    : <Result r={result} onRestart={() => setScreen("start")} />;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
